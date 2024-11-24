@@ -685,6 +685,14 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
     opts = {},
   },
+  {
+    'windwp/nvim-ts-autotag',
+    lazy = false,
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    config = function()
+      require('nvim-ts-autotag').setup()
+    end,
+  },
 
   { -- tailwind-tools.lua
     'luckasRanarison/tailwind-tools.nvim',
@@ -873,13 +881,18 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Centering windows
-    'shortcuts/no-neck-pain.nvim',
-    version = '*',
-    event = 'VimEnter',
-    config = function()
-      vim.cmd 'NoNeckPain'
-    end,
+  { -- zen mode
+    'folke/zen-mode.nvim',
+    keys = {
+      {
+        '<leader>z',
+        function()
+          require('zen-mode').toggle()
+        end,
+        mode = '',
+        desc = '[F]ind [File]',
+      },
+    },
   },
 
   { -- Collection of various small independent plugins/modules
@@ -983,7 +996,7 @@ require('lazy').setup({
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'tsx' } },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -1003,20 +1016,36 @@ require('lazy').setup({
         auto_suggestions = false,
         support_paste_from_clipboard = true,
       },
-      windows = {
-        position = 'bottom', -- the position of the sidebar
-        wrap = true, -- similar to vim.o.wrap
-        sidebar_header = { enabled = false },
-        ask = {
-          floating = true, -- Open the 'AvanteAsk' prompt in a floating window
-          start_insert = true, -- Start insert mode when opening the ask window, only effective if floating = true.
-          border = 'rounded',
-        },
+      mappings = {
+        ask = '<leader>-a',
+        focus = '<leader>-f',
+        edit = '<leader>-e',
+        refresh = '<leader>-r',
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = 'make',
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    keys = {
+      {
+        '<leader>af',
+        function()
+          require('zen-mode').close()
+          require('avante.api').focus()
+        end,
+        mode = '',
+        desc = '[A]vante [F]ocus',
+      },
+      {
+        '<leader>aa',
+        function()
+          require('zen-mode').close()
+          require('avante.api').ask()
+        end,
+        mode = '',
+        desc = '[A]vante [A]sk',
+      },
+    },
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
       'stevearc/dressing.nvim',
