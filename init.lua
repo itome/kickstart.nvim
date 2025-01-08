@@ -706,6 +706,17 @@ require('lazy').setup({
     opts = {}, -- your configuration
   },
 
+  {
+    'moonbit-community/moonbit.nvim',
+    ft = { 'moonbit' },
+    opts = {
+      treesitter = { enabled = true },
+      lsp = {
+        capabilities = vim.lsp.protocol.make_client_capabilities(),
+      },
+    },
+  },
+
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -890,7 +901,7 @@ require('lazy').setup({
           require('zen-mode').toggle()
         end,
         mode = '',
-        desc = '[F]ind [File]',
+        desc = '[Z]en',
       },
     },
   },
@@ -1012,9 +1023,19 @@ require('lazy').setup({
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
+      provider = 'openai',
+      auto_suggestions_provider = 'openai', -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
       behaviour = {
         auto_suggestions = false,
         support_paste_from_clipboard = true,
+      },
+      openai = {
+        endpoint = 'https://api.deepseek.com/v1',
+        model = 'deepseek-chat',
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 4096,
+        ['local'] = false,
       },
       mappings = {
         ask = '<leader>-a',
@@ -1120,6 +1141,17 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      require('dashboard').setup {
+        -- config
+      }
+    end,
+    dependencies = { { 'nvim-tree/nvim-web-devicons' } },
+  },
+
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -1141,7 +1173,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
