@@ -253,6 +253,7 @@ require('lazy').setup({
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    cond = !vim.g.vscode,
     opts = {
       signs = {
         add = { text = '┃' },
@@ -282,6 +283,7 @@ require('lazy').setup({
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
+    cond = !vim.g.vscode,
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
       icons = {
@@ -345,6 +347,7 @@ require('lazy').setup({
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
+    cond = !vim.g.vscode,
     event = 'VimEnter',
     branch = '0.1.x',
     dependencies = {
@@ -454,6 +457,7 @@ require('lazy').setup({
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
+    cond = !vim.g.vscode,
     ft = 'lua',
     opts = {
       library = {
@@ -462,10 +466,15 @@ require('lazy').setup({
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true },
+  {
+    'Bilal2453/luvit-meta',
+    cond = !vim.g.vscode,
+    lazy = true
+  },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    cond = !vim.g.vscode,
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
@@ -682,11 +691,13 @@ require('lazy').setup({
 
   { -- TypeScript tools
     'pmizio/typescript-tools.nvim',
+    cond = !vim.g.vscode,
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
     opts = {},
   },
   {
     'windwp/nvim-ts-autotag',
+    cond = !vim.g.vscode,
     lazy = false,
     dependencies = 'nvim-treesitter/nvim-treesitter',
     config = function()
@@ -696,6 +707,7 @@ require('lazy').setup({
 
   { -- tailwind-tools.lua
     'luckasRanarison/tailwind-tools.nvim',
+    cond = !vim.g.vscode,
     name = 'tailwind-tools',
     build = ':UpdateRemotePlugins',
     dependencies = {
@@ -706,19 +718,9 @@ require('lazy').setup({
     opts = {}, -- your configuration
   },
 
-  {
-    'moonbit-community/moonbit.nvim',
-    ft = { 'moonbit' },
-    opts = {
-      treesitter = { enabled = true },
-      lsp = {
-        capabilities = vim.lsp.protocol.make_client_capabilities(),
-      },
-    },
-  },
-
   { -- Autoformat
     'stevearc/conform.nvim',
+    cond = !vim.g.vscode,
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
@@ -762,6 +764,7 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
+    cond = !vim.g.vscode,
     event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
@@ -877,6 +880,7 @@ require('lazy').setup({
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
+    cond = !vim.g.vscode,
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
@@ -894,6 +898,7 @@ require('lazy').setup({
 
   { -- zen mode
     'folke/zen-mode.nvim',
+    cond = !vim.g.vscode,
     keys = {
       {
         '<leader>z',
@@ -947,6 +952,7 @@ require('lazy').setup({
   {
     'echasnovski/mini.files',
     version = '*',
+    cond = !vim.g.vscode,
     config = function()
       require('mini.files').setup()
     end,
@@ -965,6 +971,7 @@ require('lazy').setup({
   {
     'akinsho/toggleterm.nvim',
     version = '*',
+    cond = !vim.g.vscode,
     config = function()
       local Terminal = require('toggleterm.terminal').Terminal
       local lazygit = Terminal:new {
@@ -993,6 +1000,7 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    cond = !vim.g.vscode,
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -1019,12 +1027,13 @@ require('lazy').setup({
 
   {
     'yetone/avante.nvim',
+    cond = !vim.g.vscode,
     event = 'VeryLazy',
     lazy = false,
-    version = false, -- set this if you want to always pull the latest change
+    version = false,
     opts = {
       provider = 'openai',
-      auto_suggestions_provider = 'openai', -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
+      auto_suggestions_provider = 'openai',
       behaviour = {
         auto_suggestions = false,
         support_paste_from_clipboard = true,
@@ -1032,10 +1041,8 @@ require('lazy').setup({
       openai = {
         endpoint = 'https://api.deepseek.com/v1',
         model = 'deepseek-chat',
-        timeout = 30000, -- Timeout in milliseconds
+        timeout = 30000,
         temperature = 0,
-        max_tokens = 4096,
-        ['local'] = false,
       },
       mappings = {
         ask = '<leader>-a',
@@ -1105,6 +1112,7 @@ require('lazy').setup({
 
   {
     'zbirenbaum/copilot.lua',
+    cond = !vim.g.vscode,
     cmd = 'Copilot',
     event = 'InsertEnter',
     build = ':Copilot auth',
@@ -1130,6 +1138,7 @@ require('lazy').setup({
 
   {
     'shellRaining/hlchunk.nvim',
+    cond = !vim.g.vscode,
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       require('hlchunk').setup {
@@ -1142,14 +1151,18 @@ require('lazy').setup({
   },
 
   {
-    'nvimdev/dashboard-nvim',
-    event = 'VimEnter',
-    config = function()
-      require('dashboard').setup {
-        -- config
-      }
-    end,
-    dependencies = { { 'nvim-tree/nvim-web-devicons' } },
+    'moonbit-community/moonbit.nvim',
+    cond = !vim.g.vscode,
+    ft = { 'moonbit' },
+    opts = {
+      treesitter = {
+        enabled = true,
+        auto_install = true,
+      },
+      lsp = {
+        capabilities = vim.lsp.protocol.make_client_capabilities(),
+      },
+    },
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
